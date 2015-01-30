@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="puzzle" default="ci">
+
+    <target name="ci" depends="phpunit,phpcs"/>
+
+    <target name="phpunit">
+        <exec executable="./bin/phpunit" passthru="true" checkreturn="true">
+            <arg line="-c app"/>
+        </exec>
+    </target>
+
+    <target name="phpcs">
+        <exec executable="./bin/phpcs" passthru="true" checkreturn="true">
+            <arg value="-p"/>
+            <arg value="--standard=PSR2"/>
+            <arg path="src/"/>
+        </exec>
+    </target>
+
+    <target name="ci:full" depends="ci,phpcpd,phpmd"/>
+
+    <target name="phpmd">
+        <exec executable="./bin/phpmd" passthru="true" checkreturn="true">
+            <arg path="src/"/>
+            <arg value="text"/>
+            <arg value="codesize,unusedcode,naming"/>
+        </exec>
+    </target>
+
+    <target name="phpcpd">
+        <exec executable="./bin/phpcpd" passthru="true" checkreturn="true">
+            <arg value="--progress"/>
+            <arg line="--names *.php,*.twig"/>
+            <arg path="src/"/>
+        </exec>
+    </target>
+</project>
